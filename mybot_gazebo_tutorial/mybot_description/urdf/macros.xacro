@@ -1,0 +1,320 @@
+<?xml version="1.0"?>
+<robot>
+
+<!-- ****************************************sterring******************************************** -->
+    <macro name="sterring" params="st pr ori xyz_ori_joint rpy_ori_joint" >
+      <link
+        name="${st}_Link">
+        <inertial>
+          <origin
+            xyz="${ori*-0.000100729773299224} ${ori*-0.022707717448498} -0.0946007357290982"
+            rpy="0 0 0" />
+          <mass
+            value="0.110802029012366" />
+          <inertia
+            ixx="0.00032454182493778"
+            ixy="-9.42745264395349E-08"
+            ixz="${ori*1.05486102205035E-07}"
+            iyy="0.000313625372879202"
+            iyz="${ori*-1.07033038351386E-05}"
+            izz="3.60621586312286E-05" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="$(find mybot_description)/meshes/${st}_Link.dae" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="$(find mybot_description)/meshes/${st}_Link.dae" />
+          </geometry>
+        </collision>
+      </link>
+      <joint
+        name="${st}_joint"
+        type="revolute">
+        <origin
+          xyz="${xyz_ori_joint}"
+          rpy="${rpy_ori_joint}" />
+        <parent
+          link="${pr}_Link" />
+        <child
+          link="${st}_Link" />
+        <axis
+          xyz="0 0 1" />
+        <safety_controller
+          k_velocity="0" />
+        <joint_properties damping="0.5" friction="0.5"/>
+        <limit lower="0.6" upper="0.6" effort="10000.0" velocity="10.0"/>
+      </joint>
+
+      <transmission name="${st}_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${st}_joint">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="${st}_Motor">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+      </transmission>
+
+      <gazebo reference="${st}_Link">
+        <mu1>0.3</mu1>
+        <mu2>0.3</mu2>
+      </gazebo>
+    </macro>
+
+<!-- ****************************************bogie*********************************************** -->
+    <macro name="bogie" params="ch pr num">
+      <link
+        name="${ch}_Link">
+        <inertial>
+          <origin
+            xyz="-0.000163032997340468 ${num*-0.0332177038859611} -0.0358157719860211"
+            rpy="0 0 0" />
+          <mass
+            value="0.298477821339867" />
+          <inertia
+            ixx="0.00305008410077296"
+            ixy="${num*0.00047188421709313}"
+            ixz="-3.32375151751435E-05"
+            iyy="0.000246965375315985"
+            iyz="${num*0.000128055788099926}"
+            izz="0.00318546306770007" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="$(find mybot_description)/meshes/${ch}_Link.dae" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="$(find mybot_description)/meshes/${ch}_Link.dae" />
+          </geometry>
+        </collision>
+      </link>
+      <!-- ${ch}_joint -->
+      <joint
+        name="${ch}_joint"
+        type="revolute">
+        <origin
+          xyz="0.101899068442028 ${num*0.147305052609851} 0.176624873353953"
+          rpy="0 0 ${num*0.965625096203858}" />
+        <parent
+          link="${pr}_Link" />
+        <child
+          link="${ch}_Link" />
+        <axis
+          xyz="0 0 1" />
+        <safety_controller
+          k_velocity="0" />
+        <joint_properties damping="0.0" friction="0.0"/>
+        <limit lower="0.4" upper="0.4" effort="10000.0" velocity="10.0"/>
+      </joint>
+      <transmission name="${ch}_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${ch}_joint">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="${ch}_Motor">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+      </transmission>
+
+      <gazebo reference="${ch}_Link">
+        <mu1>0.3</mu1>
+        <mu2>0.3</mu2>
+      </gazebo>
+
+    </macro>
+
+<!-- ****************************************pivot*********************************************** -->
+    <macro name="pivot" params="pv neg">
+      <link
+        name="${pv}_Link">
+        <inertial>
+          <origin
+            xyz="-0.0271565201264132 ${neg*0.0508106635743816} 0.146224780268945"
+            rpy="0 0 0" />
+          <mass
+            value="0.673533131559532" />
+          <inertia
+            ixx="0.00224562283628407"
+            ixy="${neg*0.000201455492383518}"
+            ixz="0.000244167017551039"
+            iyy="0.0110029093831226"
+            iyz="${neg*-0.000459664852748368}"
+            izz="0.011223380102129" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="$(find mybot_description)/meshes/${pv}_Link.dae" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.776470588235294 0.756862745098039 0.737254901960784 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="$(find mybot_description)/meshes/${pv}_Link.dae" />
+          </geometry>
+        </collision>
+      </link>
+
+      <!-- Pivot_joint -->
+      <joint
+        name="${pv}_joint"
+        type="revolute">
+        <origin
+          xyz="0 ${neg*0.014975126646098} 0.116999999999989"
+          rpy="${neg*-1.57079632679479} 0 0" />
+        <parent
+          link="chassis" />
+        <child
+          link="${pv}_Link" />
+        <axis
+          xyz="0 0 -1" />
+        <safety_controller
+          k_velocity="0" />
+        <joint_properties damping="0.0" friction="0.0"/>
+        <limit lower="0.4" upper="0.4" effort="10000.0" velocity="10.0"/>
+      </joint>
+
+      <!-- transmission -->
+      <transmission name="${pv}_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${pv}_joint">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="${pv}_Motor">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+      </transmission>
+
+      <!-- gazebo -->
+      <gazebo reference="${pv}_Link">
+        <mu1>0.3</mu1>
+        <mu2>0.3</mu2>
+      </gazebo>
+    </macro>
+<!-- ****************************************wheel*********************************************** -->
+    <macro name="wheel" params="ch pr ori xyz_ori_joint rpy_ori_joint">
+      <link
+        name="${ch}_Link">
+        <inertial>
+          <origin
+            xyz="0 0  -0.0137009284721737"
+            rpy="0 0 0" />
+          <mass
+            value="0.24329720911457" />
+          <inertia
+            ixx="0.000524143243554882"
+            ixy="0"
+            ixz="0"
+            iyy="0.000524143243554873"
+            iyz="0"
+            izz="0.0009729853744639" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="$(find mybot_description)/meshes/${ch}_Link.dae" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.0 0.1 0.1 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="$(find mybot_description)/meshes/${ch}_Link.dae" />
+          </geometry>
+        </collision>
+      </link>
+      <joint
+        name="${ch}_joint"
+        type="continuous">
+        <origin
+          xyz="${xyz_ori_joint}"
+          rpy="${rpy_ori_joint}" />
+        <parent
+          link="${pr}_Link" />
+        <child
+          link="${ch}_Link" />
+        <axis
+          xyz="0 0 1" />
+        <limit effort="10000.0" velocity="100.0"/>
+        <safety_controller
+          k_velocity="0" />
+        <joint_properties damping="0.0" friction="0.0"/>
+      </joint>
+
+      <transmission name="${ch}_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${ch}_joint">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="${ch}_Motor">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+      </transmission>
+
+      <gazebo reference="${ch}_Link">
+        <mu1 value="1.0"/>
+        <mu2 value="1.0"/>
+        <kp  value="10000000.0" />
+        <kd  value="1.0" />
+        <fdir1 value="1 0 0"/>
+        <material>Gazebo/Black</material>
+      </gazebo>
+    </macro>
+
+</robot>

@@ -1,0 +1,517 @@
+<?xml version="1.0"?>
+
+<robot name="mybot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <property name="PI" value="3.1415926535897931"/>
+
+
+  <include filename="$(find mybot_description)/urdf/mybot.gazebo" />
+  <include filename="$(find mybot_description)/urdf/materials.xacro" />
+  <include filename="$(find mybot_description)/urdf/macros.xacro" />
+  <link name="footprint" />
+
+  <joint name="base_joint" type="fixed">
+    <parent link="footprint"/>
+    <child link="chassis"/>
+  </joint>
+
+  <link name="chassis">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="$(find mybot_description)/meshes/base_link.dae"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="$(find mybot_description)/meshes/base_link.dae"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+
+    <inertial>
+      <origin
+        xyz="0.015949855877801 0.000103286146624693 0.164331382997009"
+        rpy="0 0 0" />
+      <mass
+        value="10.9977" />
+      <inertia
+        ixx="0.41015032534565"
+        ixy="0.00014896595327685"
+        ixz="-0.117066888026324"
+        iyy="0.864297044074108"
+        iyz="4.29109746619749E-05"
+        izz="1.03198412493106"  />
+    </inertial>
+  </link>
+
+
+
+  <!-- <wheel lr="Left" tY="1"/>
+  <wheel lr="Right" tY="-1"/> -->
+
+  
+  <!-- Pivot_Link -->
+  <pivot pv="Pivot_left" neg="1"/>
+  <pivot pv="Pivot_right" neg="-1"/>
+  <!-- Bogie_left_Link -->
+  <bogie ch="Bogie_left" pr="Pivot_left" num="1"/>
+  <bogie ch="Bogie_right" pr="Pivot_right" num="-1"/>
+  <!-- Frame_Link -->
+  <sterring st="Frame_rear_left"  pr="Pivot_left" ori="1" xyz_ori_joint="-0.2512 0.0758502820930624 0.159624873353601" rpy_ori_joint="-1.57079632679489 0 3.14159265358979"/>
+  <sterring st="Frame_front_left" pr="Bogie_left" ori="1" xyz_ori_joint="0.0230242813783894 -0.161600997729002 -0.00600000000035122" rpy_ori_joint="1.57079632679489 0 -0.965625096203858"/>
+  <sterring st="Frame_front_right" pr="Bogie_right" ori="-1" xyz_ori_joint="0.0230242813783506 0.161600997729037 -0.00600000000014898" rpy_ori_joint="-1.57079632679501 0 0.965625096203942"/>
+  <sterring st="Frame_rear_right" pr="Pivot_right" ori="1" xyz_ori_joint="-0.251199999999933 -0.0758502820931083 0.159624873353708" rpy_ori_joint="1.57079632679479 0 3.1415926535897"/>
+  <!-- Wheel -->
+  <wheel ch="Wheel_mid_left" pr="Bogie_left" ori="1" xyz_ori_joint="0.00282985115710119 0.125984094005667 0.00954399441673065" rpy_ori_joint="0 0 1.54833813158444"/>
+  <wheel ch="Wheel_front_left" pr="Frame_front_left" ori="1" xyz_ori_joint="0 0.0165439944167309 -0.145999999999945" rpy_ori_joint="1.570796326795 0 3.14159265358969"/>
+  <wheel ch="Wheel_rear_left" pr="Frame_rear_left" ori="1" xyz_ori_joint="0 -0.0165439944167308 -0.146" rpy_ori_joint="1.570796326795 0 0"/>
+  <wheel ch="Wheel_mid_right" pr="Bogie_right" ori="1" xyz_ori_joint="0.00282985115709367 -0.125984094005641 0.00954399441663158" rpy_ori_joint="0 0 -1.5483381315845"/>
+  <wheel ch="Wheel_front_right" pr="Frame_front_right" ori="1" xyz_ori_joint="0 -0.0165439944167298 -0.145999999999915" rpy_ori_joint="-1.5707963267949 0 3.14159265358969"/>
+  <wheel ch="Wheel_rear_right" pr="Frame_rear_right" ori="1" xyz_ori_joint="0 0.0165439944167314 -0.145999999999968" rpy_ori_joint="-1.57079632679489 0 0"/>
+  
+  
+  <link name="Pivot_mid_Link">
+    <inertial>
+      <origin
+        xyz="-3.48456990945101E-06 2.25518794118029E-05 0.0732940910671185"
+        rpy="0 0 0" />
+      <mass
+        value="0.104784306017796" />
+      <inertia
+        ixx="0.00030646009753961"
+        ixy="-1.19640283602552E-08"
+        ixz="-2.1900979102239E-08"
+        iyy="0.000306535681364799"
+        iyz="1.41741666936082E-07"
+        izz="1.49479394387937E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="$(find mybot_description)/meshes/Pivot_mid_Link.dae" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.776470588235294 0.756862745098039 0.737254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="$(find mybot_description)/meshes/Pivot_mid_Link.dae" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Pivot_mid_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0147751266463989 0 0.117"
+      rpy="-1.5707963267949 0 1.5707963267949" />
+    <parent
+      link="chassis" />
+    <child
+      link="Pivot_mid_Link" />
+    <axis
+      xyz="0 0 -1" />
+    <safety_controller
+      k_velocity="0" />
+  </joint>
+
+  
+
+  <!-- camera front -->
+  <joint name="camera_joint_front" type="fixed">
+    <origin xyz="0.383 0 0.080" rpy="0 0 0"/>
+    <parent link="chassis"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <link name="camera_link">
+    <collision>
+      <origin xyz="0.005 0.011 0.013" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.015 0.030 0.027"/>
+      </geometry>
+    </collision>
+  </link>
+
+ <joint name="camera_rgb_joint" type="fixed">
+    <origin xyz="0.003 0.011 0.009" rpy="0 0 0"/>
+    <parent link="camera_link"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+  <link name="camera_rgb_frame"/>
+
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_rgb_optical_frame"/>
+  </joint>
+  <link name="camera_rgb_optical_frame"/>
+
+
+  <gazebo reference="camera_rgb_frame">
+    <sensor type="depth" name="Pi Camera">
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+      <camera>
+          <horizontal_fov>1.085595</horizontal_fov>
+          <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+          </image>
+          <clip>
+              <near>0.03</near>
+              <far>100</far>
+          </clip>
+      </camera>
+      <!-- <plugin name="camera_controller" filename="libgazebo_ros_camera.so"> -->
+      <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
+      <!-- libgazebo_ros_openni_kinect -->
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30.0</updateRate>
+        <cameraName>camera</cameraName>
+        <frameName>camera_rgb_optical_frame</frameName>
+        <imageTopicName>rgb/image_raw</imageTopicName>
+        <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
+        
+        <depthImageTopicName>rgb/image_depth</depthImageTopicName>
+        <depthImageInfoTopicName>rgb/camera_depth_info</depthImageInfoTopicName>
+        <pointCloudTopicName>rgb/image_depth/points</pointCloudTopicName>
+
+        <pointCloudCutoff>0.05</pointCloudCutoff>
+        <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+        <rangeMax>30.0</rangeMax>
+
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- camera left -->
+  <joint name="camera_joint_left" type="fixed">
+    <origin xyz="0.010 0.220 0.228" rpy="0 0 1.57"/>
+    <parent link="chassis"/>
+    <child link="camera_link_left"/>
+  </joint>
+
+  <link name="camera_link_left">
+    <collision>
+      <origin xyz="0.005 0.011 0.013" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.015 0.030 0.027"/>
+      </geometry>
+    </collision>
+  </link>
+
+ <joint name="camera_rgb_joint_left" type="fixed">
+    <origin xyz="0.003 0.011 0.009" rpy="0 0 0"/>
+    <parent link="camera_link_left"/>
+    <child link="camera_rgb_frame_left"/>
+  </joint>
+  <link name="camera_rgb_frame_left"/>
+
+  <joint name="camera_rgb_optical_joint_left" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_rgb_frame_left"/>
+    <child link="camera_rgb_optical_frame_left"/>
+  </joint>
+  <link name="camera_rgb_optical_frame_left"/>
+
+
+  <gazebo reference="camera_rgb_frame_left">
+    <sensor type="depth" name="Pi Camera">
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+      <camera>
+          <horizontal_fov>1.085595</horizontal_fov>
+          <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+          </image>
+          <clip>
+              <near>0.03</near>
+              <far>100</far>
+          </clip>
+      </camera>
+      <!-- <plugin name="camera_controller" filename="libgazebo_ros_camera.so"> -->
+      <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
+      <!-- libgazebo_ros_openni_kinect -->
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30.0</updateRate>
+        <cameraName>camera</cameraName>
+        <frameName>camera_rgb_optical_frame_left</frameName>
+        <imageTopicName>rgb_left/image_raw</imageTopicName>
+        <cameraInfoTopicName>rgb_left/camera_info</cameraInfoTopicName>
+        
+        <depthImageTopicName>rgb_left/image_depth</depthImageTopicName>
+        <depthImageInfoTopicName>rgb_left/camera_depth_info</depthImageInfoTopicName>
+        <pointCloudTopicName>rgb_left/image_depth/points</pointCloudTopicName>
+
+        <pointCloudCutoff>0.05</pointCloudCutoff>
+        <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+        <rangeMax>30.0</rangeMax>
+
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- camera right -->
+  <joint name="camera_joint_right" type="fixed">
+    <origin xyz="0.010 -0.220 0.228" rpy="0 0 -1.57"/>
+    <parent link="chassis"/>
+    <child link="camera_link_right"/>
+  </joint>
+
+  <link name="camera_link_right">
+    <collision>
+      <origin xyz="0.005 0.011 0.013" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.015 0.030 0.027"/>
+      </geometry>
+    </collision>
+  </link>
+
+ <joint name="camera_rgb_joint_right" type="fixed">
+    <origin xyz="0.003 0.011 0.009" rpy="0 0 0"/>
+    <parent link="camera_link_right"/>
+    <child link="camera_rgb_frame_right"/>
+  </joint>
+  <link name="camera_rgb_frame_right"/>
+
+  <joint name="camera_rgb_optical_joint_right" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_rgb_frame_right"/>
+    <child link="camera_rgb_optical_frame_right"/>
+  </joint>
+  <link name="camera_rgb_optical_frame_right"/>
+
+
+  <gazebo reference="camera_rgb_frame_right">
+    <sensor type="depth" name="Pi Camera">
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+      <camera>
+          <horizontal_fov>1.085595</horizontal_fov>
+          <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+          </image>
+          <clip>
+              <near>0.03</near>
+              <far>100</far>
+          </clip>
+      </camera>
+      <!-- <plugin name="camera_controller" filename="libgazebo_ros_camera.so"> -->
+      <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
+      <!-- libgazebo_ros_openni_kinect -->
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30.0</updateRate>
+        <cameraName>camera</cameraName>
+        <frameName>camera_rgb_optical_frame_right</frameName>
+        <imageTopicName>rgb_right/image_raw</imageTopicName>
+        <cameraInfoTopicName>rgb_right/camera_info</cameraInfoTopicName>
+        
+        <depthImageTopicName>rgb_right/image_depth</depthImageTopicName>
+        <depthImageInfoTopicName>rgb_right/camera_depth_info</depthImageInfoTopicName>
+        <pointCloudTopicName>rgb_right/image_depth/points</pointCloudTopicName>
+
+        <pointCloudCutoff>0.05</pointCloudCutoff>
+        <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+        <rangeMax>30.0</rangeMax>
+
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- camera rear -->
+  <joint name="camera_joint_rear" type="fixed">
+    <origin xyz="-0.361 0 0.113" rpy="0 0 3.14"/>
+    <parent link="chassis"/>
+    <child link="camera_link_rear"/>
+  </joint>
+
+  <link name="camera_link_rear">
+    <collision>
+      <origin xyz="0.005 0.011 0.013" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.015 0.030 0.027"/>
+      </geometry>
+    </collision>
+  </link>
+
+ <joint name="camera_rgb_joint_rear" type="fixed">
+    <origin xyz="0.003 0.011 0.009" rpy="0 0 0"/>
+    <parent link="camera_link_rear"/>
+    <child link="camera_rgb_frame_rear"/>
+  </joint>
+  <link name="camera_rgb_frame_rear"/>
+
+  <joint name="camera_rgb_optical_joint_rear" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera_rgb_frame_rear"/>
+    <child link="camera_rgb_optical_frame_rear"/>
+  </joint>
+  <link name="camera_rgb_optical_frame_rear"/>
+
+
+  <gazebo reference="camera_rgb_frame_rear">
+    <sensor type="depth" name="Pi Camera">
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+      <camera>
+          <horizontal_fov>1.085595</horizontal_fov>
+          <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+          </image>
+          <clip>
+              <near>0.03</near>
+              <far>100</far>
+          </clip>
+      </camera>
+      <!-- <plugin name="camera_controller" filename="libgazebo_ros_camera.so"> -->
+      <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
+      <!-- libgazebo_ros_openni_kinect -->
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30.0</updateRate>
+        <cameraName>camera</cameraName>
+        <frameName>camera_rgb_optical_frame_rear</frameName>
+        <imageTopicName>rgb_rear/image_raw</imageTopicName>
+        <cameraInfoTopicName>rgb_rear/camera_info</cameraInfoTopicName>
+        
+        <depthImageTopicName>rgb_rear/image_depth</depthImageTopicName>
+        <depthImageInfoTopicName>rgb_rear/camera_depth_info</depthImageInfoTopicName>
+        <pointCloudTopicName>rgb_rear/image_depth/points</pointCloudTopicName>
+
+        <pointCloudCutoff>0.05</pointCloudCutoff>
+        <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+        <rangeMax>30.0</rangeMax>
+
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Hokuyo Laser -->
+  <!-- laser -->
+  <joint name="hokuyo_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <!-- <origin xyz="0.2206 0.0 0.0063" rpy="0 0 0"/> -->
+    <origin xyz="0.250 0.0 0.362" rpy="0 0 0"/>
+    <!-- <origin xyz="-0.064 0 0" rpy="0 0 0"/> -->
+    <parent link="chassis"/>
+    <child link="hokuyo_link"/>
+  </joint>
+
+  <link name="hokuyo_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="$(find mybot_description)/meshes/hokuyo.dae"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <gazebo reference="hokuyo_link">
+      <sensor type="ray" name="head_hokuyo_sensor">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <ray>
+          <scan>
+
+            <!-- <vertical>
+              <samples>50</samples> -->
+              <!-- <samples>720</samples> -->
+              <!-- <resolution>1.0</resolution>
+              <min_angle>0.0</min_angle>
+              <max_angle>0.5</max_angle>
+            </vertical> -->
+
+            <horizontal>
+              <samples>720</samples>
+              <!-- <samples>720</samples> -->
+              <resolution>1.0</resolution>
+              <!-- <min_angle>-0.9916</min_angle>
+              <max_angle>0.9495</max_angle> -->
+              <min_angle>1.57</min_angle>
+              <max_angle>-1.57</max_angle>
+              <!-- <min_angle>0</min_angle>
+              <max_angle>0</max_angle> -->
+            </horizontal>
+          
+          </scan>
+          <range>
+            <min>0.1</min>
+            <max>10.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise parameters based on published spec for Hokuyo laser
+                achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+                stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+                reading. -->
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+          <topicName>/husky/laser/scan</topicName>
+          <frameName>hokuyo_link</frameName>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+</robot>

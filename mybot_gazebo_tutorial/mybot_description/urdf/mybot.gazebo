@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/mybot</robotNamespace>
+    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    <legacyModeNS>false</legacyModeNS>
+  </plugin>
+</gazebo>
+
+<gazebo>
+  <plugin name="DiffDrivePlugin6W" filename="libdiffdrive_plugin_6w.so">
+    <legacyMode>true</legacyMode>
+    <rosDebugLevel>Debug</rosDebugLevel>
+    <publishWheelTF>false</publishWheelTF>
+    <publishWheelJointState>true</publishWheelJointState>
+    <publishOdomTF>true</publishOdomTF>
+    <alwaysOn>true</alwaysOn>
+    <updateRate>100.0</updateRate>
+    <frontLeftJoint>Wheel_front_left_joint</frontLeftJoint>
+    <midLeftJoint>Wheel_mid_left_joint</midLeftJoint>
+    <rearLeftJoint>Wheel_rear_left_joint</rearLeftJoint>
+    <frontRightJoint>Wheel_front_right_joint</frontRightJoint>
+    <midRightJoint>Wheel_mid_right_joint</midRightJoint>
+    <rearRightJoint>Wheel_rear_right_joint</rearRightJoint>
+    <wheelSeparation>0.25</wheelSeparation>
+    <wheelDiameter>0.2</wheelDiameter>
+    <torque>20</torque>
+    <commandTopic>/cmd_vel</commandTopic>
+    <odometryTopic>mybot/odom_diffdrive</odometryTopic>
+    <odometryFrame>odom</odometryFrame>
+    <robotBaseFrame>footprint</robotBaseFrame>
+    </plugin>
+</gazebo>
+
+  <gazebo>
+    <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+      <frameName>map</frameName>
+      <bodyName>chassis</bodyName>
+      <topicName>mybot/odom</topicName>
+      <updateRate>30.0</updateRate>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="chassis">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+
+</robot>
