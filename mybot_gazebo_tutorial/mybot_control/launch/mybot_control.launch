@@ -25,4 +25,12 @@
     <remap from="/joint_states" to="/mybot/joint_states" />
   </node>
 
+
+  <node name="mybot_acker_man_node"
+    pkg="mybot_control"
+    type="control_6_wheel_4_sterring.py"
+    respawn="false"
+    output="screen"
+    args=""/>
+
 </launch>

@@ -3,6 +3,7 @@
 
 <!-- ****************************************sterring******************************************** -->
     <macro name="sterring" params="st pr ori xyz_ori_joint rpy_ori_joint" >
+
       <link
         name="${st}_Link">
         <inertial>
@@ -43,6 +44,7 @@
           </geometry>
         </collision>
       </link>
+
       <joint
         name="${st}_joint"
         type="revolute">
@@ -58,7 +60,7 @@
         <safety_controller
           k_velocity="0" />
         <joint_properties damping="0.5" friction="0.5"/>
-        <limit lower="0.6" upper="0.6" effort="10000.0" velocity="10.0"/>
+        <limit lower="-0.6" upper="0.6" effort="10000.0" velocity="10.0"/>
       </joint>
 
       <transmission name="${st}_trans">
@@ -75,6 +77,7 @@
       <gazebo reference="${st}_Link">
         <mu1>0.3</mu1>
         <mu2>0.3</mu2>
+        <self_collide>1</self_collide>
       </gazebo>
     </macro>
 
@@ -120,7 +123,7 @@
           </geometry>
         </collision>
       </link>
-      <!-- ${ch}_joint -->
+
       <joint
         name="${ch}_joint"
         type="revolute">
@@ -136,8 +139,9 @@
         <safety_controller
           k_velocity="0" />
         <joint_properties damping="0.0" friction="0.0"/>
-        <limit lower="0.4" upper="0.4" effort="10000.0" velocity="10.0"/>
+        <limit lower="-0.4" upper="0.4" effort="10000.0" velocity="10.0"/>
       </joint>
+
       <transmission name="${ch}_trans">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="${ch}_joint">
@@ -152,6 +156,7 @@
       <gazebo reference="${ch}_Link">
         <mu1>0.3</mu1>
         <mu2>0.3</mu2>
+        <self_collide>1</self_collide>
       </gazebo>
 
     </macro>
@@ -215,7 +220,7 @@
         <safety_controller
           k_velocity="0" />
         <joint_properties damping="0.0" friction="0.0"/>
-        <limit lower="0.4" upper="0.4" effort="10000.0" velocity="10.0"/>
+        <limit lower="-0.4" upper="0.4" effort="10000.0" velocity="10.0"/>
       </joint>
 
       <!-- transmission -->
@@ -234,6 +239,7 @@
       <gazebo reference="${pv}_Link">
         <mu1>0.3</mu1>
         <mu2>0.3</mu2>
+        <self_collide>1</self_collide>
       </gazebo>
     </macro>
 <!-- ****************************************wheel*********************************************** -->
@@ -278,21 +284,18 @@
           </geometry>
         </collision>
       </link>
+      
       <joint
         name="${ch}_joint"
         type="continuous">
         <origin
           xyz="${xyz_ori_joint}"
           rpy="${rpy_ori_joint}" />
-        <parent
-          link="${pr}_Link" />
-        <child
-          link="${ch}_Link" />
-        <axis
-          xyz="0 0 1" />
+        <parent link="${pr}_Link" />
+        <child link="${ch}_Link" />
+        <axis xyz="0 0 1" />
         <limit effort="10000.0" velocity="100.0"/>
-        <safety_controller
-          k_velocity="0" />
+        <safety_controller k_velocity="0" />
         <joint_properties damping="0.0" friction="0.0"/>
       </joint>
 
@@ -311,9 +314,12 @@
         <mu1 value="1.0"/>
         <mu2 value="1.0"/>
         <kp  value="10000000.0" />
-        <kd  value="1.0" />
+        <kd>100.0</kd>
         <fdir1 value="1 0 0"/>
+        <minDepth>0.001</minDepth>
+        <maxVel>1.0</maxVel>
         <material>Gazebo/Black</material>
+        <self_collide>1</self_collide>
       </gazebo>
     </macro>
 

@@ -37,7 +37,7 @@
         xyz="0.015949855877801 0.000103286146624693 0.164331382997009"
         rpy="0 0 0" />
       <mass
-        value="10.9977" />
+        value="1.9977" />
       <inertia
         ixx="0.41015032534565"
         ixy="0.00014896595327685"
@@ -114,7 +114,7 @@
     </collision>
   </link>
   <joint name="Pivot_mid_joint"
-    type="fixed">
+    type="revolute">
     <origin
       xyz="-0.0147751266463989 0 0.117"
       rpy="-1.5707963267949 0 1.5707963267949" />
@@ -126,8 +126,13 @@
       xyz="0 0 -1" />
     <safety_controller
       k_velocity="0" />
+    <joint_properties damping="0.0" friction="0.0"/>
+    <limit lower="-0.4" upper="0.4" effort="10000.0" velocity="10.0"/>
   </joint>
 
+  <gazebo reference="Pivot_mid_Link">
+    <self_collide>1</self_collide>
+  </gazebo>
   
 
   <!-- camera front -->

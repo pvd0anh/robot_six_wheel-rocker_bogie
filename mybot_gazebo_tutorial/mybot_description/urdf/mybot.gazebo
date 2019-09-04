@@ -9,7 +9,7 @@
   </plugin>
 </gazebo>
 
-<gazebo>
+<!-- <gazebo>
   <plugin name="DiffDrivePlugin6W" filename="libdiffdrive_plugin_6w.so">
     <legacyMode>true</legacyMode>
     <rosDebugLevel>Debug</rosDebugLevel>
@@ -32,7 +32,7 @@
     <odometryFrame>odom</odometryFrame>
     <robotBaseFrame>footprint</robotBaseFrame>
     </plugin>
-</gazebo>
+</gazebo> -->
 
   <gazebo>
     <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
@@ -44,7 +44,10 @@
   </gazebo>
 
   <gazebo reference="chassis">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
     <material>Gazebo/Orange</material>
+    <self_collide>1</self_collide>
   </gazebo>
 
 
