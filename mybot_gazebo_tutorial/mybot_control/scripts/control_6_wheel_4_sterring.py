@@ -11,7 +11,8 @@ class DeliveryRobot(object):
     def __init__(self):
         rospy.loginfo("CuriosityRoverAckerMan Initialising...")
 
-        self.calculator = RobotCalculator((10.53, 10.73, 11.66, 11.82), (math.pi / 180, 1.0472)) # (1 degree, 60 degree)
+        self.calculator = RobotCalculator(
+            (20.2, 25.0, 24.0, 20.0), (math.pi / 180, 1.0472))  # (1 degree, 60 degree)
         self.publishers_curiosity_d = {}
         self.controller_ns = "mybot"
         self.controller_command = "command"
@@ -24,12 +25,11 @@ class DeliveryRobot(object):
                                 "sterring_B_L_joint_position_controller",
                                 "sterring_B_R_joint_position_controller",
                                 "sterring_F_L_joint_position_controller",
-                                "sterring_F_R_joint_position_controller",
-                                
-        ]
+                                "sterring_F_R_joint_position_controller"]
 
         for controller_name in self.controllers_list:
-            topic_name = "/"+self.controller_ns+"/"+controller_name+"/"+self.controller_command
+            topic_name = "/"+self.controller_ns+"/" + \
+                controller_name+"/"+self.controller_command
             self.publishers_curiosity_d[controller_name] = rospy.Publisher(
                 topic_name,
                 Float64,
@@ -54,7 +54,7 @@ class DeliveryRobot(object):
         for controller_name, publisher_obj in self.publishers_curiosity_d.iteritems():
             publisher_ready = False
             while not publisher_ready:
-                rospy.logwarn("Checking Publisher for ==>"+str(controller_name))
+                rospy.logwarn("Checking Publisher for ==>" + str(controller_name))
                 pub_num = publisher_obj.get_num_connections()
                 publisher_ready = (pub_num > 0)
                 rate_wait.sleep()
@@ -73,13 +73,6 @@ class DeliveryRobot(object):
         self.front_wheel_R = self.publishers_curiosity_d[self.controllers_list[3]]
         self.middle_wheel_L = self.publishers_curiosity_d[self.controllers_list[4]]
         self.middle_wheel_R = self.publishers_curiosity_d[self.controllers_list[5]]
-        # Get the publishers for suspension
-        # self.suspension_arm_B2_L = self.publishers_curiosity_d[self.controllers_list[6]]
-        # self.suspension_arm_B2_R = self.publishers_curiosity_d[self.controllers_list[7]]
-        # self.suspension_arm_B_L = self.publishers_curiosity_d[self.controllers_list[8]]
-        # self.suspension_arm_B_R = self.publishers_curiosity_d[self.controllers_list[9]]
-        # self.suspension_arm_F_L = self.publishers_curiosity_d[self.controllers_list[10]]
-        # self.suspension_arm_F_R = self.publishers_curiosity_d[self.controllers_list[11]]
         # Get the publishers for steering
         self.suspension_steer_B_L = self.publishers_curiosity_d[self.controllers_list[6]]
         self.suspension_steer_B_R = self.publishers_curiosity_d[self.controllers_list[7]]
@@ -93,42 +86,14 @@ class DeliveryRobot(object):
         self.front_wheel_R_velocity_msg = Float64()
         self.middle_wheel_L_velocity_msg = Float64()
         self.middle_wheel_R_velocity_msg = Float64()
-
-        # self.suspension_arm_B2_L_pos_msg = Float64()
-        # self.suspension_arm_B2_R_pos_msg = Float64()
-        # self.suspension_arm_B_L_pos_msg = Float64()
-        # self.suspension_arm_B_R_pos_msg = Float64()
-        # self.suspension_arm_F_L_pos_msg = Float64()
-        # self.suspension_arm_F_R_pos_msg = Float64()
-
         self.suspension_steer_B_L_pos_msg = Float64()
         self.suspension_steer_B_R_pos_msg = Float64()
         self.suspension_steer_F_L_pos_msg = Float64()
         self.suspension_steer_F_R_pos_msg = Float64()
 
-
-
     def init_state(self):
-        # self.set_suspension_mode("standard")
         self.set_turning_radius(None, False)
         self.set_wheels_speed(0.0, None, False)
-
-    # def set_suspension_mode(self, mode_name):
-    #     if mode_name == "standard":
-
-    #         self.suspension_arm_B2_L_pos_msg.data = -0.2
-    #         self.suspension_arm_B2_R_pos_msg.data = -0.2
-    #         self.suspension_arm_B_L_pos_msg.data = -0.2
-    #         self.suspension_arm_B_R_pos_msg.data = -0.2
-    #         self.suspension_arm_F_L_pos_msg.data = 0.2
-    #         self.suspension_arm_F_R_pos_msg.data = 0.2
-
-    #         self.suspension_arm_B2_L.publish(self.suspension_arm_B2_L_pos_msg)
-    #         self.suspension_arm_B2_R.publish(self.suspension_arm_B2_R_pos_msg)
-    #         self.suspension_arm_B_L.publish(self.suspension_arm_B_L_pos_msg)
-    #         self.suspension_arm_B_R.publish(self.suspension_arm_B_R_pos_msg)
-    #         self.suspension_arm_F_L.publish(self.suspension_arm_F_L_pos_msg)
-    #         self.suspension_arm_F_R.publish(self.suspension_arm_F_R_pos_msg)
 
     def set_turning_radius(self, turn_radius, isRotate):
 
@@ -145,7 +110,8 @@ class DeliveryRobot(object):
         self.suspension_steer_F_R.publish(self.suspension_steer_F_R_pos_msg)
 
     def set_wheels_speed(self, turning_speed, turning_radius, isRotate):
-        velocity = self.calculator.calculateVelocity(turning_speed, turning_radius, isRotate)
+        velocity = self.calculator.calculateVelocity(
+            turning_speed, turning_radius, isRotate)
 
         self.back_wheel_L_velocity_msg.data = velocity['3']
         self.back_wheel_R_velocity_msg.data = velocity['6']
@@ -170,10 +136,9 @@ class DeliveryRobot(object):
         if turning_radius == 0.0:
             turning_radius = None
 
-        rospy.logdebug("turning_radius="+str(turning_radius)+",wheel_speed="+str(wheel_speed))
+        rospy.logdebug("turning_radius="+str(turning_radius) + ",wheel_speed="+str(wheel_speed))
         self.set_turning_radius(turning_radius, isRotate)
         self.set_wheels_speed(wheel_speed, turning_radius, isRotate)
-
 
 
 if __name__ == "__main__":
@@ -183,4 +148,3 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         delivery_robot.move_with_cmd_vel()
         rate.sleep()
-
