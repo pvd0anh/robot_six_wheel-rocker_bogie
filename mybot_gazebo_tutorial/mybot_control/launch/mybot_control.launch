@@ -5,7 +5,8 @@
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-	output="screen" ns="/mybot" args="joint_state_controller
+	output="screen" args="--namespace=/mybot
+                                    joint_state_controller
                                     front_wheel_L_joint_velocity_controller
                                     middle_wheel_L_joint_velocity_controller
                                     back_wheel_L_joint_velocity_controller
@@ -15,7 +16,8 @@
                                     sterring_F_L_joint_position_controller
                                     sterring_B_L_joint_position_controller
                                     sterring_F_R_joint_position_controller
-                                    sterring_B_R_joint_position_controller"/>
+                                    sterring_B_R_joint_position_controller
+                                    --shutdown-timeout 3"/>
 
 
   <!-- convert joint states to TF transforms for rviz, etc -->
